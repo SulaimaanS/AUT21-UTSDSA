@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
 #include <set>
@@ -18,8 +18,9 @@ class Graph
 {
 
 private:
-    vector<int> *adj_list;
-    size_t size;
+    typedef pair<string, T> vertex;
+    std::map<string, vertex> adjList;
+    size_t countVertex, countEdge;
 
 public:
     /* define your data structure to represent a weighted undirected graph */
@@ -71,24 +72,23 @@ public:
 template <typename T>
 Graph<T>::Graph()
 {
+    countEdge = 0;
+    countVertex = 0;
 }
 
 template <typename T>
-Graph<T>::~Graph()
-{
-    delete[] adj_list;
-}
+Graph<T>::~Graph() {}
 
 template <typename T>
 size_t Graph<T>::num_vertices()
 {
-    return adj_list->size();
+    return countVertex;
 }
 
 template <typename T>
 size_t Graph<T>::num_edges()
 {
-    return 0;
+    return countEdge;
 }
 
 /* test2 */
@@ -96,12 +96,18 @@ size_t Graph<T>::num_edges()
 template <typename T>
 void Graph<T>::add_vertex(const string &u)
 {
+    adjList[u] = pair<string, T>();
+    countVertex++;
 }
 
 template <typename T>
 bool Graph<T>::contains(const string &u)
 {
-    return false;
+    if (adjList.find(u) == adjList.end())
+    {
+        return false;
+    }
+    return true;
 }
 
 /* test3 */
@@ -109,7 +115,13 @@ bool Graph<T>::contains(const string &u)
 template <typename T>
 vector<string> Graph<T>::get_vertices()
 {
-    return vector<string>();
+    std::vector<string> vertexList;
+
+    for (const auto &vertex : adjList)
+    {
+        vertexList.push_back(vertex.first);
+    }
+    return vertexList;
 }
 
 /* test4 */
@@ -117,10 +129,20 @@ vector<string> Graph<T>::get_vertices()
 template <typename T>
 void Graph<T>::add_edge(const string &u, const string &v, const T &weight)
 {
+    if (contains(u) && contains(v))
+    {
+        adjList[u].second = weight;
+        adjList[v].second = weight;
+        countEdge++;
+    }
 }
 template <typename T>
 bool Graph<T>::adjacent(const string &u, const string &v)
 {
+    if (adjList[u].first == v)
+    {
+        return true;
+    }
     return false;
 }
 
