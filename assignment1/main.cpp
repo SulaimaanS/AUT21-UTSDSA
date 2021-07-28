@@ -34,8 +34,7 @@ int main()
     cout << "Is there an edge between A and B? " << g.adjacent("A", "B") << endl; // should be 1 or true
     cout << "Is there an edge between B and C? " << g.adjacent("B", "C") << endl; // should be 0 or false
 
-    cout << "Degree of D: " << g.degree("D") << endl; // should be 1
-
+    cout << "Degree of D: " << g.degree("D") << endl; // should be 1!return
     cout << "The visiting order of DFS (starting from B):";
     for (string x : g.depth_first_traversal("B"))
     {
@@ -49,4 +48,13 @@ int main()
         cout << " " << x;
     }
     cout << endl;
+
+    cout << "Minimum spanning tree: \n";
+    Graph<int> m = g.minimum_spanning_tree();
+    cout << "Number of edges in minimum spanning tree: " << m.num_edges() << "\n";
+    vector<pair<string, string>> mst = m.get_edges();
+    for (int i = 0; i < mst.size(); ++i)
+    {
+        cout << mst[i].first << ' ' << mst[i].second << "\n";
+    }
 }
